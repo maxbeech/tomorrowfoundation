@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
-import Image from 'next/image';
+import React, { useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { InView } from 'react-intersection-observer';
+import Image from 'next/image';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { 
   ShieldCheckIcon, 
   ScaleIcon, 
@@ -13,25 +13,96 @@ import {
   HeartIcon 
 } from '@heroicons/react/24/outline';
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+// Animation components
+interface FadeInProps {
+  children: React.ReactNode;
+  delay?: number;
+  direction?: 'up' | 'down' | 'left' | 'right' | null;
+  fullWidth?: boolean;
+  className?: string;
+  duration?: number;
+}
+
+const FadeIn: React.FC<FadeInProps> = ({ 
+  children, 
+  delay = 0, 
+  direction = null, 
+  fullWidth = false,
+  className = "",
+  duration = 0.5
+}) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  const variants = {
+    hidden: {
+      opacity: 0,
+      y: direction === 'up' ? 40 : direction === 'down' ? -40 : 0,
+      x: direction === 'left' ? 40 : direction === 'right' ? -40 : 0,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
+        duration: duration,
+        delay: delay,
+        ease: [0.22, 1, 0.36, 1],
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      variants={variants}
+      className={`${fullWidth ? 'w-full' : ''} ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
-const FadeIn = ({ children }: { children: React.ReactNode }) => {
+// Parallax image component
+interface ParallaxImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+  speed?: number;
+  imgClassName?: string;
+}
+
+const ParallaxImage: React.FC<ParallaxImageProps> = ({
+  src,
+  alt,
+  className = '',
+  speed = 0.5,
+  imgClassName = '',
+}) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], [0, 300 * speed]);
+
   return (
-    <InView threshold={0.2}>
-      {({ ref, inView }) => (
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={fadeIn}
-        >
-          {children}
-        </motion.div>
-      )}
-    </InView>
+    <div ref={ref} className={`relative overflow-hidden ${className}`}>
+      <motion.div style={{ y }} className="absolute inset-0">
+        <Image 
+          src={src} 
+          alt={alt} 
+          fill 
+          className={`object-cover ${imgClassName}`}
+          priority
+        />
+      </motion.div>
+    </div>
   );
 };
 
@@ -85,269 +156,340 @@ export default function About() {
     }
   ];
 
+  // About page timeline data
+  const timelineData = [
+    {
+      year: '2010',
+      title: 'Foundation Established',
+      description: 'The Tomorrow Foundation was established to defend constitutional rights and support rural American communities.'
+    },
+    {
+      year: '2014',
+      title: 'Educational Program Launch',
+      description: 'Launched our first major educational initiative to teach citizens about their constitutional rights.'
+    },
+    {
+      year: '2017',
+      title: 'Rural Community Support',
+      description: 'Expanded our mission to include comprehensive support for rural communities and agriculture.'
+    },
+    {
+      year: '2020',
+      title: 'Legal Defense Fund',
+      description: 'Created a legal defense fund to support constitutional rights cases across the country.'
+    },
+    {
+      year: '2023',
+      title: 'National Expansion',
+      description: 'Expanded our programs to reach all 50 states, with a focus on underserved rural areas.'
+    },
+  ];
+
+  // Team members data
+  const leadershipTeam = [
+    {
+      name: 'Robert Anderson',
+      role: 'Executive Director',
+      bio: 'Former constitutional law professor with 20+ years of experience defending American values and rights.',
+      image: '/media/Photos/pexels-olly-932352.jpg'
+    },
+    {
+      name: 'Sarah Johnson',
+      role: 'Director of Rural Programs',
+      bio: 'Fifth-generation farmer and agricultural policy expert dedicated to supporting American farming communities.',
+      image: '/media/Photos/pexels-olly-722014.jpg'
+    },
+    {
+      name: 'Michael Davis',
+      role: 'Chief Legal Officer',
+      bio: 'Constitutional attorney with a track record of defending individual liberties and property rights.',
+      image: '/media/Photos/pexels-brett-sayles-1340504.jpg'
+    }
+  ];
+
+  // Stats data
+  const impactStats = [
+    { number: '50+', label: 'Constitutional Rights Cases' },
+    { number: '100,000+', label: 'Citizens Educated' },
+    { number: '500+', label: 'Rural Communities Supported' },
+    { number: '30+', label: 'States with Active Programs' }
+  ];
+
   return (
-    <main className="bg-gray-50">
+    <>
       {/* Hero Section */}
-      <section className="bg-navy-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ParallaxImage
+            src="/media/Photos/dome-2831971_1280.jpg"
+            alt="US Capitol dome"
+            speed={0.3}
+            imgClassName="brightness-[0.7]"
+          />
+          <div className="absolute inset-0 bg-navy-900/50" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center pt-20">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold font-serif mb-6">About The Tomorrow Foundation</h1>
-              <p className="text-xl text-gray-300 mb-8">
-                Empowering Americans to protect liberty and preserve constitutional principles for future generations.
-              </p>
-            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-serif mb-6">
+              About the Tomorrow Foundation
+            </h1>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto">
+              Preserving American values and defending the principles that made our nation great.
+            </p>
           </FadeIn>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <FadeIn>
-              <div className="relative h-96 rounded-lg overflow-hidden shadow-xl">
-                <Image 
-                  src="/images/constitution.jpg"
-                  alt="The United States Constitution document"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="rounded-lg"
-                  quality={90}
-                />
-              </div>
-            </FadeIn>
-            
-            <FadeIn>
-              <div>
-                <h2 className="text-3xl font-bold text-navy-900 font-serif mb-6">Our Mission</h2>
-                <p className="text-gray-700 mb-6 text-lg">
-                  The Tomorrow Foundation is dedicated to preserving constitutional rights, promoting civic education, and supporting communities across America. We believe that an informed citizenry is essential to maintaining our republic and the liberties it guarantees.
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <FadeIn direction="right">
+                <div className="mb-4">
+                  <span className="text-red-600 font-semibold uppercase tracking-wider text-sm">
+                    Our Purpose
+                  </span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-6 font-serif">
+                  Our Mission & Values
+                </h2>
+                <p className="text-gray-700 mb-6 leading-relaxed">
+                  The Tomorrow Foundation is dedicated to defending constitutional rights, educating citizens, and supporting rural communities across America. We believe that informed citizens are essential for a thriving democracy and that rural communities are the backbone of American values.
                 </p>
-                <p className="text-gray-700 mb-8 text-lg">
-                  Through advocacy, education, and community support, we work to ensure that the principles that have guided our nation since its founding remain strong for generations to come.
+                <p className="text-gray-700 mb-8 leading-relaxed">
+                  Our work is guided by the profound belief that American values have forged the greatest nation in history, and it's our responsibility to preserve these principles for future generations.
                 </p>
-                <Link href="/about/mission" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 transition duration-300 ease-in-out">
+                <Link 
+                  href="/about/mission" 
+                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-all duration-300"
+                >
                   Learn More About Our Mission
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </Link>
+              </FadeIn>
+            </div>
+            <FadeIn direction="left" delay={0.2}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-navy-50 p-6 rounded-lg border-l-4 border-navy-600">
+                  <h3 className="text-xl font-semibold text-navy-900 mb-3 font-serif">Defending Constitutional Rights</h3>
+                  <p className="text-gray-700">
+                    We advocate for and defend the constitutional rights that form the foundation of American liberty.
+                  </p>
+                </div>
+                <div className="bg-red-50 p-6 rounded-lg border-l-4 border-red-600">
+                  <h3 className="text-xl font-semibold text-navy-900 mb-3 font-serif">Educating Citizens</h3>
+                  <p className="text-gray-700">
+                    We provide educational resources to help Americans understand and exercise their constitutional rights.
+                  </p>
+                </div>
+                <div className="bg-gold-50 p-6 rounded-lg border-l-4 border-gold-600">
+                  <h3 className="text-xl font-semibold text-navy-900 mb-3 font-serif">Supporting Rural Communities</h3>
+                  <p className="text-gray-700">
+                    We support rural communities and agriculture as vital components of America's strength and heritage.
+                  </p>
+                </div>
+                <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-600">
+                  <h3 className="text-xl font-semibold text-navy-900 mb-3 font-serif">Preserving American Values</h3>
+                  <p className="text-gray-700">
+                    We work to preserve the traditional American values that have made our nation exceptional.
+                  </p>
+                </div>
               </div>
             </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* Vision Section */}
-      <section className="py-16 bg-navy-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Impact Stats Section */}
+      <section className="py-20 bg-navy-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold text-navy-900 font-serif mb-6">Our Vision</h2>
-              <p className="text-xl text-gray-700">
-                We envision an America where citizens are knowledgeable about their constitutional rights, actively engaged in civic life, and committed to preserving liberty for future generations.
-              </p>
-            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 font-serif text-gold-400">
+              Our Impact
+            </h2>
           </FadeIn>
-
-          <FadeIn>
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <div className="p-8 md:p-12">
-                <blockquote className="text-center">
-                  <p className="text-xl md:text-2xl font-medium text-gray-700 italic mb-8">
-                    "The Constitution is not an instrument for the government to restrain the people; it is an instrument for the people to restrain the government — lest it come to dominate our lives and interests."
-                  </p>
-                  <footer className="text-gray-600">
-                    <span className="font-medium">— Patrick Henry</span>
-                  </footer>
-                </blockquote>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl font-bold text-navy-900 font-serif mb-6">Our Core Values</h2>
-              <p className="text-xl text-gray-700">
-                These fundamental principles guide our work and shape our approach to fulfilling our mission.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreValues.map((value, index) => (
-              <FadeIn key={value.title}>
-                <ValuesCard 
-                  icon={value.icon}
-                  title={value.title}
-                  description={value.description}
-                />
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {impactStats.map((stat, index) => (
+              <FadeIn key={index} delay={0.1 * index} direction="up">
+                <div className="bg-navy-800/50 p-6 rounded-lg border border-navy-700 hover:transform hover:scale-105 transition-all duration-300">
+                  <h3 className="text-3xl md:text-4xl font-bold text-gold-400 mb-2">{stat.number}</h3>
+                  <p className="text-lg text-white/80">{stat.label}</p>
+                </div>
               </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* History Timeline Section */}
-      <section className="py-16 bg-navy-50">
+      {/* Leadership Team Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl font-bold text-navy-900 font-serif mb-6">Our History</h2>
-              <p className="text-xl text-gray-700">
-                Founded in 2020, the Tomorrow Foundation has grown to become a leading advocate for constitutional rights and civic education.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="relative">
-            {/* Vertical timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-red-600"></div>
-            
-            <div className="space-y-16 relative">
-              <FadeIn>
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 md:pr-12 md:text-right">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-2xl font-bold text-navy-900 mb-2">2020</h3>
-                      <p className="text-gray-700">Foundation established with a mission to protect constitutional rights and promote civic education.</p>
-                    </div>
-                  </div>
-                  <div className="md:w-1/2 mt-4 md:mt-0">
-                    {/* Timeline dot */}
-                    <div className="w-6 h-6 rounded-full bg-red-600 shadow absolute left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                </div>
-              </FadeIn>
-
-              <FadeIn>
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 md:text-right order-2 md:order-1">
-                    {/* Timeline dot */}
-                    <div className="w-6 h-6 rounded-full bg-red-600 shadow absolute left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                  <div className="md:w-1/2 md:pl-12 order-1 md:order-2">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-2xl font-bold text-navy-900 mb-2">2021</h3>
-                      <p className="text-gray-700">Launched our first educational programs reaching over 10,000 Americans in rural communities.</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
-
-              <FadeIn>
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 md:pr-12 md:text-right">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-2xl font-bold text-navy-900 mb-2">2022</h3>
-                      <p className="text-gray-700">Established the Constitutional Rights Defense Fund to provide legal support to Americans facing rights violations.</p>
-                    </div>
-                  </div>
-                  <div className="md:w-1/2 mt-4 md:mt-0">
-                    {/* Timeline dot */}
-                    <div className="w-6 h-6 rounded-full bg-red-600 shadow absolute left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                </div>
-              </FadeIn>
-
-              <FadeIn>
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 md:text-right order-2 md:order-1">
-                    {/* Timeline dot */}
-                    <div className="w-6 h-6 rounded-full bg-red-600 shadow absolute left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                  <div className="md:w-1/2 md:pl-12 order-1 md:order-2">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-2xl font-bold text-navy-900 mb-2">2023</h3>
-                      <p className="text-gray-700">Expanded to 50 states, with a focus on reaching underserved rural communities throughout America.</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
-
-              <FadeIn>
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 md:pr-12 md:text-right">
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h3 className="text-2xl font-bold text-navy-900 mb-2">Today</h3>
-                      <p className="text-gray-700">Continuing to grow our impact through innovative educational initiatives, community partnerships, and strategic advocacy.</p>
-                    </div>
-                  </div>
-                  <div className="md:w-1/2 mt-4 md:mt-0">
-                    {/* Timeline dot */}
-                    <div className="w-6 h-6 rounded-full bg-red-600 shadow absolute left-1/2 transform -translate-x-1/2"></div>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-
-          <div className="text-center mt-16">
-            <Link href="/about/history" className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md bg-white hover:bg-gray-50 transition duration-300 ease-in-out">
-              Learn More About Our History
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership Banner */}
-      <section className="py-16 bg-navy-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="md:flex md:items-center md:justify-between">
+          <div className="text-center mb-16">
             <FadeIn>
-              <div className="max-w-2xl">
-                <h2 className="text-3xl font-bold font-serif mb-4">Meet Our Leadership</h2>
-                <p className="text-gray-300 text-lg">
-                  Our team of dedicated professionals brings decades of experience in constitutional law, education, and nonprofit management.
-                </p>
-              </div>
+              <span className="text-red-600 font-semibold uppercase tracking-wider text-sm">
+                Our People
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mt-2 font-serif">
+                Leadership Team
+              </h2>
             </FadeIn>
-            <div className="mt-8 md:mt-0">
-              <Link 
-                href="/about/leadership" 
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-navy-900 bg-white hover:bg-gray-100 transition duration-300 ease-in-out"
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {leadershipTeam.map((member, index) => (
+              <FadeIn key={index} delay={0.1 * index} direction="up">
+                <motion.div 
+                  className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="relative h-72 w-full">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-navy-900 mb-1 font-serif">{member.name}</h3>
+                    <p className="text-red-600 font-medium mb-3">{member.role}</p>
+                    <p className="text-gray-700">{member.bio}</p>
+                  </div>
+                </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <FadeIn delay={0.4}>
+              <Link
+                href="/about/team"
+                className="inline-flex items-center px-6 py-3 border border-navy-600 text-navy-800 font-medium rounded-md hover:bg-navy-50 transition-all duration-300"
               >
-                Meet The Team
+                Meet Our Full Team
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </Link>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 md:py-24">
+      {/* Timeline Section */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="bg-red-600 rounded-lg shadow-xl overflow-hidden">
-              <div className="px-6 py-12 md:p-12 md:flex md:items-center md:justify-between">
-                <div className="max-w-2xl">
-                  <h2 className="text-3xl font-bold text-white mb-4 font-serif">Join Our Mission</h2>
-                  <p className="text-xl text-red-100">
-                    We invite you to become part of our community dedicated to protecting and preserving the constitutional principles that make America great.
-                  </p>
+          <div className="text-center mb-16">
+            <FadeIn>
+              <span className="text-red-600 font-semibold uppercase tracking-wider text-sm">
+                Our Journey
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mt-2 font-serif">
+                Foundation History
+              </h2>
+            </FadeIn>
+          </div>
+          
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-red-200"></div>
+            
+            {/* Timeline items */}
+            {timelineData.map((item, index) => (
+              <FadeIn key={index} delay={0.1 * index}>
+                <div className={`flex flex-col md:flex-row md:items-center mb-12 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                  <div className="md:w-1/2 mb-6 md:mb-0 flex justify-center md:justify-end">
+                    <motion.div 
+                      className={`p-6 rounded-lg shadow-md bg-white border-l-4 border-red-600 max-w-md ${index % 2 === 0 ? 'md:mr-12' : 'md:ml-12'}`}
+                      whileHover={{ y: -5 }}
+                    >
+                      <h3 className="text-xl font-semibold text-navy-900 mb-2 font-serif">{item.title}</h3>
+                      <p className="text-gray-700">{item.description}</p>
+                    </motion.div>
+                  </div>
+                  
+                  <div className="hidden md:flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center text-lg font-bold shadow-lg z-10">
+                      {item.year}
+                    </div>
+                  </div>
+                  
+                  <div className="md:w-1/2 md:flex md:justify-start">
+                    <div className="md:block md:w-full md:h-0"></div>
+                  </div>
                 </div>
-                <div className="mt-8 md:mt-0 flex">
-                  <Link 
-                    href="/get-involved/donate" 
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-red-600 bg-white hover:bg-gray-100 mx-2 transition duration-300 ease-in-out"
-                  >
-                    Donate
-                  </Link>
-                  <Link 
-                    href="/get-involved/membership" 
-                    className="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md shadow-sm text-white bg-transparent hover:bg-red-700 mx-2 transition duration-300 ease-in-out"
-                  >
-                    Become a Member
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
+              </FadeIn>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <FadeIn delay={0.4}>
+              <Link
+                href="/about/history"
+                className="inline-flex items-center px-6 py-3 border border-navy-600 text-navy-800 font-medium rounded-md hover:bg-navy-50 transition-all duration-300"
+              >
+                Explore Our Full History
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </FadeIn>
+          </div>
         </div>
       </section>
-    </main>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-navy-900 rounded-2xl overflow-hidden shadow-xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-10 lg:p-16 flex flex-col justify-center">
+                <FadeIn>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 font-serif">
+                    Join Our Mission to Preserve American Values
+                  </h2>
+                </FadeIn>
+                <FadeIn delay={0.1}>
+                  <p className="text-white/80 mb-8 text-lg">
+                    Help us defend constitutional rights, educate citizens, and support rural communities. Together, we can ensure America's greatness for generations to come.
+                  </p>
+                </FadeIn>
+                <FadeIn delay={0.2}>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link
+                      href="/get-involved"
+                      className="px-8 py-4 bg-white text-navy-900 font-bold rounded-md hover:bg-gray-100 transition-colors duration-300 text-center"
+                    >
+                      Get Involved
+                    </Link>
+                    <Link
+                      href="/get-involved/donate"
+                      className="px-8 py-4 bg-gold-500 text-navy-900 font-bold rounded-md hover:bg-gold-400 transition-colors duration-300 text-center"
+                    >
+                      Donate Now
+                    </Link>
+                  </div>
+                </FadeIn>
+              </div>
+              <div className="relative h-[300px] lg:h-auto">
+                <Image
+                  src="/media/Photos/monument-2501317_1280.jpg"
+                  alt="Washington Monument"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-navy-900/20"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 } 

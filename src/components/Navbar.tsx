@@ -56,7 +56,15 @@ const Navbar = () => {
       ] 
     },
     { name: 'News', href: '/news' },
-    { name: 'Resources', href: '/resources' },
+    { 
+      name: 'Resources', 
+      href: '/resources',
+      submenu: [
+        { name: 'Publications', href: '/resources/publications' },
+        { name: 'Research', href: '/resources/research' },
+        { name: 'Terms of Service', href: '/terms-of-service' }
+      ] 
+    },
     { 
       name: 'Get Involved', 
       href: '/get-involved',

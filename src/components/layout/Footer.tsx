@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaFacebookF, FaInstagram, FaPinterestP, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -43,9 +43,9 @@ export default function Footer() {
             viewport={{ once: true }}
             variants={footerAnimation}
           >
-            <h3 className="text-xl font-serif font-medium mb-6">Bookham Kitchens</h3>
+            <h3 className="text-xl font-serif font-medium mb-6">Tomorrow Foundation</h3>
             <p className="text-gray-300 mb-4">
-              Family-run kitchen design and installation specialists in Surrey, providing bespoke solutions tailored to your needs.
+              Dedicated to defending constitutional rights, educating citizens, and supporting rural communities across America.
             </p>
             <div className="flex space-x-4 mt-6">
               <a 
@@ -53,65 +53,77 @@ export default function Footer() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-white/20 transition-colors p-2 rounded-full"
+                aria-label="Facebook"
               >
                 <FaFacebookF className="h-4 w-4" />
+              </a>
+              <a 
+                href="https://twitter.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white/10 hover:bg-white/20 transition-colors p-2 rounded-full"
+                aria-label="Twitter"
+              >
+                <FaTwitter className="h-4 w-4" />
               </a>
               <a 
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-white/20 transition-colors p-2 rounded-full"
+                aria-label="Instagram"
               >
                 <FaInstagram className="h-4 w-4" />
               </a>
               <a 
-                href="https://pinterest.com" 
+                href="https://youtube.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-white/20 transition-colors p-2 rounded-full"
+                aria-label="YouTube"
               >
-                <FaPinterestP className="h-4 w-4" />
+                <FaYoutube className="h-4 w-4" />
               </a>
             </div>
           </motion.div>
           
-          {/* Column 2: Services */}
+          {/* Column 2: Focus Areas */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={footerAnimationDelayed(0.2)}
           >
-            <h3 className="text-xl font-serif font-medium mb-6">Services</h3>
+            <h3 className="text-xl font-serif font-medium mb-6">Focus Areas</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/kitchens/fitted" className="text-gray-300 hover:text-accent transition-colors">
-                  Fitted Kitchens
+                <Link href="/focus-areas/constitutional-rights" className="text-gray-300 hover:text-accent transition-colors">
+                  Constitutional Rights
                 </Link>
               </li>
               <li>
-                <Link href="/kitchens/replacement-doors" className="text-gray-300 hover:text-accent transition-colors">
-                  Replacement Doors
+                <Link href="/focus-areas/citizen-education" className="text-gray-300 hover:text-accent transition-colors">
+                  Citizen Education
                 </Link>
               </li>
               <li>
-                <Link href="/kitchens/cabinet-spray-painting" className="text-gray-300 hover:text-accent transition-colors">
-                  Cabinet Spray Painting
+                <Link href="/focus-areas/rural-communities" className="text-gray-300 hover:text-accent transition-colors">
+                  Rural Communities
                 </Link>
               </li>
               <li>
-                <Link href="/home-living/bedroom-cabinets" className="text-gray-300 hover:text-accent transition-colors">
-                  Bedroom Cabinets
+                <Link href="/resources/publications" className="text-gray-300 hover:text-accent transition-colors">
+                  Publications
                 </Link>
               </li>
               <li>
-                <Link href="/home-living/home-office" className="text-gray-300 hover:text-accent transition-colors">
-                  Home Office
+                <Link href="/resources/research" className="text-gray-300 hover:text-accent transition-colors">
+                  Research
                 </Link>
               </li>
               <li>
-                <Link href="/building-services/kitchen-installation" className="text-gray-300 hover:text-accent transition-colors">
-                  Kitchen Installation
+                <Link href="/get-involved/events" className="text-gray-300 hover:text-accent transition-colors">
+                  Events
                 </Link>
               </li>
             </ul>
@@ -127,8 +139,8 @@ export default function Footer() {
             <h3 className="text-xl font-serif font-medium mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/portfolio" className="text-gray-300 hover:text-accent transition-colors">
-                  Portfolio
+                <Link href="/news" className="text-gray-300 hover:text-accent transition-colors">
+                  News
                 </Link>
               </li>
               <li>
@@ -137,8 +149,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-300 hover:text-accent transition-colors">
-                  Blog
+                <Link href="/get-involved/donate" className="text-gray-300 hover:text-accent transition-colors">
+                  Donate
                 </Link>
               </li>
               <li>
@@ -171,30 +183,29 @@ export default function Footer() {
               <li className="flex items-start">
                 <FaMapMarkerAlt className="h-5 w-5 text-accent mr-3 mt-1" />
                 <span className="text-gray-300">
-                  25 Church Road, Great Bookham<br />
-                  Leatherhead, Surrey<br />
-                  KT23 3PG
+                  1776 Constitution Ave<br />
+                  Washington, DC 20001<br />
+                  United States
                 </span>
               </li>
               <li className="flex items-center">
                 <FaPhoneAlt className="h-4 w-4 text-accent mr-3" />
-                <a href="tel:+441932391183" className="text-gray-300 hover:text-accent transition-colors">
-                  01932 391183
+                <a href="tel:+12025551776" className="text-gray-300 hover:text-accent transition-colors">
+                  (202) 555-1776
                 </a>
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="h-4 w-4 text-accent mr-3" />
-                <a href="mailto:sales@bookhamkitchens.co.uk" className="text-gray-300 hover:text-accent transition-colors">
-                  sales@bookhamkitchens.co.uk
+                <a href="mailto:info@tomorrowfoundation.org" className="text-gray-300 hover:text-accent transition-colors">
+                  info@tomorrowfoundation.org
                 </a>
               </li>
             </ul>
             <div className="mt-6">
-              <h4 className="text-sm font-medium mb-2">Opening Hours</h4>
+              <h4 className="text-sm font-medium mb-2">Office Hours</h4>
               <p className="text-gray-300 text-sm">
-                Monday - Friday: 9:00am - 5:30pm<br />
-                Saturday: 9:00am - 4:00pm<br />
-                Sunday: Closed
+                Monday - Friday: 9:00am - 5:00pm<br />
+                Saturday - Sunday: Closed
               </p>
             </div>
           </motion.div>
@@ -203,9 +214,9 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="py-6 border-t border-white/10 text-sm text-gray-400">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p>© {currentYear} Bookham Kitchens. All rights reserved.</p>
+            <p>© {currentYear} Tomorrow Foundation. All rights reserved.</p>
             <p className="mt-2 md:mt-0">
-              Designed with <span className="text-accent">♥</span> in Surrey
+              Defending American Values and Constitutional Rights
             </p>
           </div>
         </div>
