@@ -6,12 +6,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Hero from '@/components/Hero';
 import { 
-  CalendarDaysIcon, 
-  HeartIcon, 
-  AcademicCapIcon, 
+  ShieldCheckIcon, 
+  BookOpenIcon, 
+  HomeIcon,
   UserGroupIcon,
-  SparklesIcon,
   ArrowRightIcon,
+  DocumentTextIcon,
+  HandRaisedIcon,
+  GlobeAmericasIcon
 } from '@heroicons/react/24/outline';
 
 // Animation components
@@ -107,8 +109,8 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({
   );
 };
 
-// Services card component
-interface ServiceCardProps {
+// Focus Area card component
+interface FocusAreaCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
@@ -116,21 +118,21 @@ interface ServiceCardProps {
   delay?: number;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, link, delay = 0 }) => {
+const FocusAreaCard: React.FC<FocusAreaCardProps> = ({ icon, title, description, link, delay = 0 }) => {
   return (
     <FadeIn delay={delay} direction="up" className="h-full">
       <motion.div 
         className="flex flex-col h-full bg-white rounded-xl shadow-sm hover:shadow-md p-6 transition-all duration-300 group"
         whileHover={{ y: -5 }}
       >
-        <div className="p-3 bg-emerald-50 rounded-xl w-fit mb-4 text-emerald-600">
+        <div className="p-3 bg-red-50 rounded-xl w-fit mb-4 text-red-600">
           {icon}
         </div>
-        <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
+        <h3 className="text-xl font-semibold mb-3 text-navy-900 font-serif">{title}</h3>
         <p className="text-gray-600 flex-grow mb-4">{description}</p>
         <Link 
           href={link} 
-          className="inline-flex items-center font-medium text-emerald-600 group-hover:text-emerald-700"
+          className="inline-flex items-center font-medium text-red-600 group-hover:text-red-700"
         >
           Learn more 
           <motion.span 
@@ -151,44 +153,44 @@ export default function Home() {
   // Testimonials data
   const testimonials = [
     {
-      quote: "Bisley Base has been a second home for our children. The staff are incredible - so caring and attentive. Our kids absolutely love going there!",
-      author: "Sarah P.",
-      role: "Parent of Jack & Emily"
+      quote: "The Tomorrow Foundation has been at the forefront of defending our constitutional rights. Their work is invaluable to preserving freedom in America.",
+      author: "James Wilson",
+      role: "Constitutional Law Attorney"
     },
     {
-      quote: "The preschool program is exceptional. Our daughter has thrived in the stimulating environment and caring atmosphere that Bisley Base provides.",
-      author: "Mark T.",
-      role: "Parent of Sophia"
+      quote: "As a farmer in rural America, I've seen firsthand how the Tomorrow Foundation's advocacy has helped our community thrive despite challenging times.",
+      author: "Sarah Miller",
+      role: "Third-generation Farmer"
     },
     {
-      quote: "As working parents, we rely on the wraparound care at Bisley Base. The flexibility, quality of care, and communication with parents is outstanding.",
-      author: "Emma & John H.",
-      role: "Parents of Oliver"
+      quote: "The educational resources provided by the Foundation have transformed my understanding of my rights as an American citizen.",
+      author: "Robert Johnson",
+      role: "Community Leader"
     }
   ];
   
   // Latest News data
   const latestNews = [
     {
-      title: "Summer Holiday Club Booking Now Open",
+      title: "Supreme Court Victory for Property Rights",
+      date: "June 12, 2024",
+      image: "/media/Photos/capitol-5019534_1280.jpg",
+      excerpt: "The Tomorrow Foundation's legal team secured a major victory for property owners in a landmark Supreme Court case.",
+      link: "/news/supreme-court-victory"
+    },
+    {
+      title: "Rural Development Initiative Launches",
+      date: "May 28, 2024",
+      image: "/media/Photos/bridge-4433114_1280.jpg",
+      excerpt: "Our new initiative aims to support agricultural communities with resources, education, and advocacy.",
+      link: "/news/rural-development-initiative"
+    },
+    {
+      title: "Constitutional Rights Workshop Series",
       date: "May 15, 2024",
-      image: "/media/484871687_1066676745504882_7776977396599937926_n.jpg",
-      excerpt: "Secure your child's place in our action-packed summer holiday club with exciting activities, outdoor adventures, and creative fun.",
-      link: "/news/summer-holiday-club"
-    },
-    {
-      title: "Preschool Open Day Announced",
-      date: "April 30, 2024",
-      image: "/media/484902036_1066676725504884_4700747617186550414_n.jpg",
-      excerpt: "Join us for our upcoming Open Day to tour our facilities, meet our qualified staff, and learn about our preschool curriculum.",
-      link: "/news/preschool-open-day"
-    },
-    {
-      title: "New Forest School Activities Launch",
-      date: "April 12, 2024",
-      image: "/media/484918616_1066676722171551_1681522475451576546_n.jpg",
-      excerpt: "We're excited to introduce new forest school activities to our curriculum, fostering outdoor learning and exploration.",
-      link: "/news/forest-school-activities"
+      image: "/media/Photos/us-capitol-477987_1280.jpg",
+      excerpt: "Join our upcoming workshop series to learn about your constitutional rights and how to protect them.",
+      link: "/news/workshop-series"
     }
   ];
 
@@ -197,49 +199,49 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
       
-      {/* About Section */}
+      {/* Mission Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Welcome to Bisley Base
+                <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-6 font-serif">
+                  Preserving American Values
                 </h2>
               </FadeIn>
               <FadeIn delay={0.1}>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Established in 2001, Bisley Base offers exceptional childcare and early education in the heart of Surrey. We provide a nurturing, stimulating environment where children can thrive, learn, and develop their unique potential.
+                  The Tomorrow Foundation is dedicated to preserving and promoting the fundamental principles that have made America the greatest nation in history. We work tirelessly to defend constitutional rights, educate citizens, and support rural communities across our great nation.
                 </p>
               </FadeIn>
               <FadeIn delay={0.2}>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  Our qualified team is dedicated to providing high-quality care and education for children aged 2-11 years, with a range of services including preschool, breakfast club, after-school club, and holiday club programs.
+                  Founded on the belief that informed citizens are essential for a thriving democracy, our foundation provides resources, advocacy, and educational programs to help Americans understand and exercise their constitutional rights.
                 </p>
               </FadeIn>
               <FadeIn delay={0.3}>
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
                   <Link 
                     href="/about" 
-                    className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors duration-300 text-center"
+                    className="px-6 py-3 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-colors duration-300 text-center"
                   >
                     About Us
                   </Link>
                   <Link 
-                    href="/parents/admissions" 
-                    className="px-6 py-3 border border-emerald-600 text-emerald-600 font-medium rounded-md hover:bg-emerald-50 transition-colors duration-300 text-center"
+                    href="/get-involved/donate" 
+                    className="px-6 py-3 border border-navy-600 text-navy-800 font-medium rounded-md hover:bg-navy-50 transition-colors duration-300 text-center"
                   >
-                    Enroll Now
+                    Support Our Mission
                   </Link>
                 </div>
               </FadeIn>
             </div>
             <div className="relative">
               <FadeIn delay={0.4} direction="left">
-                <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-lg border-4 border-white">
                   <Image 
-                    src="/media/484869461_1066673028838587_705034766726118684_n.jpg" 
-                    alt="Children playing at Bisley Base"
+                    src="/media/Photos/monument-2501317_1280.jpg" 
+                    alt="American flag"
                     fill
                     className="object-cover"
                   />
@@ -247,17 +249,17 @@ export default function Home() {
               </FadeIn>
               <FadeIn delay={0.6} direction="up">
                 <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
-                  <div className="flex items-center space-x-3 text-emerald-600">
-                    <SparklesIcon className="h-6 w-6" />
-                    <span className="font-semibold">Ofsted Outstanding</span>
+                  <div className="flex items-center space-x-3 text-red-600">
+                    <ShieldCheckIcon className="h-6 w-6" />
+                    <span className="font-semibold">Defending Liberty</span>
                   </div>
                 </div>
               </FadeIn>
               <FadeIn delay={0.7} direction="up">
                 <div className="absolute -top-6 -right-6 bg-white p-4 rounded-lg shadow-lg">
-                  <div className="flex items-center space-x-3 text-emerald-600">
-                    <HeartIcon className="h-6 w-6" />
-                    <span className="font-semibold">20+ Years Experience</span>
+                  <div className="flex items-center space-x-3 text-navy-600">
+                    <GlobeAmericasIcon className="h-6 w-6" />
+                    <span className="font-semibold">Nationwide Impact</span>
                   </div>
                 </div>
               </FadeIn>
@@ -266,95 +268,71 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Our Services Section */}
+      {/* Focus Areas Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our Programs & Services
+              <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4 font-serif">
+                Our Focus Areas
               </h2>
             </FadeIn>
             <FadeIn delay={0.1}>
               <p className="max-w-3xl mx-auto text-gray-600">
-                We offer a range of flexible childcare options to support families and nurture children's development
+                Dedicated to preserving America's constitutional foundation, educating citizens, and supporting rural communities
               </p>
             </FadeIn>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ServiceCard 
-              icon={<AcademicCapIcon className="h-8 w-8" />}
-              title="Preschool"
-              description="Our preschool program offers a stimulating environment for children aged 2-4 years, focusing on play-based learning and development."
-              link="/programs/preschool"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FocusAreaCard 
+              icon={<ShieldCheckIcon className="h-8 w-8" />}
+              title="Defending Constitutional Rights"
+              description="We work tirelessly to protect and defend the constitutional rights of all Americans through legal advocacy, education, and grassroots initiatives."
+              link="/focus-areas/constitutional-rights"
               delay={0.2}
             />
             
-            <ServiceCard 
-              icon={<CalendarDaysIcon className="h-8 w-8" />}
-              title="After School Club"
-              description="Providing fun, supervised care for school-aged children with activities, healthy snacks, and homework support."
-              link="/programs/after-school"
+            <FocusAreaCard 
+              icon={<BookOpenIcon className="h-8 w-8" />}
+              title="Educating Citizens"
+              description="Our educational programs empower Americans with knowledge about their rights and responsibilities as citizens in our constitutional republic."
+              link="/focus-areas/citizen-education"
               delay={0.3}
             />
             
-            <ServiceCard 
-              icon={<UserGroupIcon className="h-8 w-8" />}
-              title="Breakfast Club"
-              description="Start the day right with our breakfast club, offering nutritious meals and engaging activities before school begins."
-              link="/programs/breakfast"
+            <FocusAreaCard 
+              icon={<HomeIcon className="h-8 w-8" />}
+              title="Supporting Rural Communities"
+              description="We champion the backbone of America—rural communities and agriculture—through advocacy, resources, and community development initiatives."
+              link="/focus-areas/rural-communities"
               delay={0.4}
-            />
-            
-            <ServiceCard 
-              icon={<HeartIcon className="h-8 w-8" />}
-              title="Holiday Club"
-              description="Action-packed holiday programs full of fun activities, trips, and themed events during school breaks."
-              link="/programs/holiday-club"
-              delay={0.5}
-            />
-            
-            <ServiceCard 
-              icon={<SparklesIcon className="h-8 w-8" />}
-              title="Wraparound Care"
-              description="Flexible childcare solutions that wrap around school hours, designed to support working parents."
-              link="/programs/wraparound"
-              delay={0.6}
-            />
-            
-            <ServiceCard 
-              icon={<CalendarDaysIcon className="h-8 w-8" />}
-              title="Special Events"
-              description="Themed days, guest workshops, and seasonal celebrations that enrich our regular childcare programs."
-              link="/programs/special-events"
-              delay={0.7}
             />
           </div>
         </div>
       </section>
       
       {/* Testimonials Section */}
-      <section className="py-20 bg-emerald-600 relative overflow-hidden">
+      <section className="py-20 bg-navy-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%">
-            <pattern id="pattern-circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse">
-              <circle id="pattern-circle" cx="20" cy="20" r="3" fill="#fff"></circle>
+            <pattern id="pattern-stars" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse">
+              <path id="star" d="M25,1 L31,17 L49,17 L35,29 L41,45 L25,35 L9,45 L15,29 L1,17 L19,17 Z" fill="#fff"></path>
             </pattern>
-            <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"></rect>
+            <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stars)"></rect>
           </svg>
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                What Parents Say
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 font-serif">
+                Testimonials
               </h2>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <p className="max-w-3xl mx-auto text-emerald-50">
-                Hear from the families who trust us with their children's care and education
+              <p className="max-w-3xl mx-auto text-gold-300">
+                Hear from Americans who have been impacted by our work
               </p>
             </FadeIn>
           </div>
@@ -363,7 +341,7 @@ export default function Home() {
             {testimonials.map((testimonial, index) => (
               <FadeIn key={index} delay={0.2 + index * 0.1} direction="up">
                 <div className="bg-white rounded-xl shadow-lg p-8 h-full flex flex-col">
-                  <div className="mb-4 text-emerald-500">
+                  <div className="mb-4 text-gold-500">
                     <svg
                       className="h-8 w-8"
                       fill="currentColor"
@@ -375,7 +353,7 @@ export default function Home() {
                   </div>
                   <p className="text-gray-600 mb-6 flex-grow italic">"{testimonial.quote}"</p>
                   <div className="mt-auto">
-                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
+                    <p className="font-semibold text-navy-800">{testimonial.author}</p>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
                   </div>
                 </div>
@@ -391,20 +369,20 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
             <div>
               <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4 font-serif">
                   Latest News & Updates
                 </h2>
               </FadeIn>
               <FadeIn delay={0.1}>
                 <p className="text-gray-600">
-                  Stay updated with the latest happenings at Bisley Base
+                  Stay informed on our ongoing work to defend American values
                 </p>
               </FadeIn>
             </div>
             <FadeIn delay={0.2}>
               <Link 
                 href="/news" 
-                className="mt-4 md:mt-0 inline-flex items-center font-medium text-emerald-600 hover:text-emerald-700"
+                className="mt-4 md:mt-0 inline-flex items-center font-medium text-red-600 hover:text-red-700"
               >
                 View all news
                 <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -428,8 +406,8 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-6 flex flex-col flex-grow">
-                    <p className="text-sm text-emerald-600 mb-2">{item.date}</p>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <p className="text-sm text-red-600 mb-2">{item.date}</p>
+                    <h3 className="text-xl font-semibold text-navy-900 mb-2 font-serif">
                       {item.title}
                     </h3>
                     <p className="text-gray-600 mb-4 flex-grow">
@@ -437,7 +415,7 @@ export default function Home() {
                     </p>
                     <Link
                       href={item.link}
-                      className="inline-flex items-center font-medium text-emerald-600 hover:text-emerald-700 mt-auto"
+                      className="inline-flex items-center font-medium text-red-600 hover:text-red-700 mt-auto"
                     >
                       Read more
                       <ArrowRightIcon className="ml-2 h-4 w-4" />
@@ -453,42 +431,110 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 relative">
         <ParallaxImage
-          src="/media/484917025_1068052962033927_2729368767143192861_n.jpg"
-          alt="Children playing at Bisley Base"
+          src="/media/Photos/washingtondc-4816984_1280.jpg"
+          alt="American flag"
           className="absolute inset-0"
           imgClassName="brightness-[0.25]"
         />
         
         {/* Additional dark overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-navy-900/50"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <FadeIn>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Ready to Join Our Bisley Base Family?
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 font-serif">
+                Join Us in Defending American Values
               </h2>
             </FadeIn>
             <FadeIn delay={0.1}>
               <p className="text-xl text-white/90 mb-8">
-                Take the first step in providing exceptional care and education for your child
+                Together, we can preserve the constitutional principles that have made America the greatest nation in history
               </p>
             </FadeIn>
             <FadeIn delay={0.2}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link 
-                  href="/contact" 
-                  className="px-8 py-4 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors duration-300 text-center"
+                  href="/get-involved/donate" 
+                  className="px-8 py-4 bg-gold-500 text-navy-900 font-bold rounded-md hover:bg-gold-400 transition-colors duration-300 text-center"
                 >
-                  Book a Tour
+                  Donate Now
                 </Link>
                 <Link 
-                  href="/parents/admissions" 
+                  href="/get-involved" 
                   className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-medium rounded-md hover:bg-white/20 transition-colors duration-300 text-center"
                 >
-                  Enrollment Information
+                  Ways to Get Involved
                 </Link>
               </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Resources Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <FadeIn>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4 font-serif">
+                Educational Resources
+              </h2>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <p className="max-w-3xl mx-auto text-gray-600">
+                Access tools and materials to learn about your constitutional rights and American values
+              </p>
+            </FadeIn>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FadeIn delay={0.2} direction="up">
+              <Link href="/resources/constitution-guide">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                  <div className="bg-red-50 p-3 rounded-full w-fit mb-4">
+                    <DocumentTextIcon className="h-6 w-6 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-navy-900 font-serif">Constitution Guide</h3>
+                  <p className="text-gray-600 text-sm">Understand the U.S. Constitution and its amendments</p>
+                </div>
+              </Link>
+            </FadeIn>
+            
+            <FadeIn delay={0.3} direction="up">
+              <Link href="/resources/legal-library">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                  <div className="bg-red-50 p-3 rounded-full w-fit mb-4">
+                    <BookOpenIcon className="h-6 w-6 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-navy-900 font-serif">Legal Library</h3>
+                  <p className="text-gray-600 text-sm">Access landmark cases and legal resources</p>
+                </div>
+              </Link>
+            </FadeIn>
+            
+            <FadeIn delay={0.4} direction="up">
+              <Link href="/resources/educational-videos">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                  <div className="bg-red-50 p-3 rounded-full w-fit mb-4">
+                    <UserGroupIcon className="h-6 w-6 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-navy-900 font-serif">Educational Videos</h3>
+                  <p className="text-gray-600 text-sm">Watch informative videos on constitutional principles</p>
+                </div>
+              </Link>
+            </FadeIn>
+            
+            <FadeIn delay={0.5} direction="up">
+              <Link href="/resources/downloadable-materials">
+                <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                  <div className="bg-red-50 p-3 rounded-full w-fit mb-4">
+                    <HandRaisedIcon className="h-6 w-6 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-navy-900 font-serif">Free Materials</h3>
+                  <p className="text-gray-600 text-sm">Download educational materials and guides</p>
+                </div>
+              </Link>
             </FadeIn>
           </div>
         </div>

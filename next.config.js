@@ -17,6 +17,8 @@ const nextConfig = {
       },
     ],
     unoptimized: false, // Use Next.js image optimization for better performance
+    dangerouslyAllowSVG: true, // Allow SVG files to be processed by Image component
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   // Configure webpack to handle video files
   webpack: (config) => {
